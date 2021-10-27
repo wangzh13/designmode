@@ -2,10 +2,12 @@ package com.wzh.designmode.strategy;
 
 import com.wzh.designmode.strategy.exception.StrategyEnum;
 import com.wzh.designmode.strategy.exception.StrategyException;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Component
 public class StrategyMap {
 
     private Map<String, Map<Object, Object>> data = new HashMap<>();

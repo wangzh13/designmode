@@ -1,6 +1,8 @@
 package com.wzh.designmode.strategy.annotation.strategyentity;
 
+import java.util.List;
+
 public interface StrategyEntity<T> {
 
-    T[] rule();
+    List<T> rule();
 }

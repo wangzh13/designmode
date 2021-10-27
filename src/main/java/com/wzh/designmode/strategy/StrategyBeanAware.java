@@ -27,12 +27,13 @@ public class StrategyBeanAware implements ApplicationContextAware {
                     return;
                 }
 
-                for (int i = 0; i < value.rule().length; i++) {
-                    if ( value.rule()[i].getClass() != item2.value()){
+                value.rule().forEach(val -> {
+                    if ( val.getClass() != item2.value()){
                         return;
                     }
-                    map.put(value.rule()[i], value);
-                }
+                    map.put(val, value);
+                });
+
                 Map data = strategyMap.get(item);
                 if (data == null){
                     strategyMap.put(item, map);
