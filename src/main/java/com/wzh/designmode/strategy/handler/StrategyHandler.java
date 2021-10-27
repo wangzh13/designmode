@@ -3,9 +3,11 @@ package com.wzh.designmode.strategy.handler;
 import com.wzh.designmode.strategy.StrategyMap;
 import com.wzh.designmode.strategy.annotation.StrategyType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.context.annotation.Configuration;
 
-@Component
+@Configuration
+@ConditionalOnClass(StrategyMap.class)
 public class StrategyHandler {
 
     @Autowired
