@@ -12,42 +12,26 @@ public class StrategyMap {
 
     private Map<String, Map<Object, Object>> data = new HashMap<>();
 
+    public <T> void put(String key, Map<Object, T> map){
 
-    public <T> void put(String type, Map<Object, T> map){
-
-        if (map == null || type == null){
+        if (map == null || key == null){
             throw new StrategyException(StrategyEnum.DATA_ERROR.getCode(),
                     StrategyEnum.DATA_ERROR.getMsg());
         }
-        data.put(type, (Map<Object, Object>) map);
+        data.put(key, (Map<Object, Object>) map);
     }
 
-    public <T> void put(Object key, T value, String type){
+    public <T, R> R get(String key, Object entityKey, Class<R> result){
 
-        if (key == null || value == null || type == null){
+        if (entityKey == null || key == null){
             throw new StrategyException(StrategyEnum.DATA_ERROR.getCode(),
                     StrategyEnum.DATA_ERROR.getMsg());
         }
-
-        Map<Object, Object> map = data.get(type);
-
-        if (map == null){
-            Map<Object, Object> newMap = new HashMap<>();
-            newMap.put(key, value);
-            data.put(type, newMap);
-        }else {
-            map.put(key, value);
-        }
-
+        return (R) data.get(key).get(entityKey);
     }
 
-    public <T, R> R get(String type, Object key, Class<R> result){
-
-        if (key == null || type == null){
-            throw new StrategyException(StrategyEnum.DATA_ERROR.getCode(),
-                    StrategyEnum.DATA_ERROR.getMsg());
-        }
-        return (R) data.get(type).get(key);
+    public Map get(String key){
+        return data.get(key);
     }
 
 }

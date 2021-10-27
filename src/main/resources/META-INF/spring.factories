@@ -1,2 +1,5 @@
 org.springframework.boot.SpringApplicationRunListener=\
   com.wzh.designmode.strategy.StrategyRunListener
+
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+ com.wzh.designmode.strategy.StrategyBeanAware

@@ -1,18 +1,23 @@
 package com.wzh.designmode.strategy;
 
-import com.wzh.designmode.strategy.annotation.strategyentity.StrategyEntity;
-import com.wzh.designmode.strategy.annotation.StrategyType;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.SpringApplicationRunListener;
 import org.springframework.context.ConfigurableApplicationContext;
 
-import java.lang.annotation.Annotation;
-import java.util.HashMap;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.*;
+import java.util.Date;
 import java.util.Map;
-import java.util.function.BiConsumer;
 
 public class StrategyRunListener implements SpringApplicationRunListener {
 
+    private final Logger log= LoggerFactory.getLogger(StrategyRunListener.class);
 
     SpringApplication springApplication;
 
@@ -25,70 +30,61 @@ public class StrategyRunListener implements SpringApplicationRunListener {
     public void started(ConfigurableApplicationContext context) {
 
         StrategyMap strategyMap = context.getBean(StrategyMap.class);
+        ObjectMapper objectMapper = context.getBean(ObjectMapper.class);
+        String resourcePath = null;
+        String classPath = null;
+        try {
+            classPath = context.getResource("classpath:").getURL().getPath();
 
-        Map<String, StrategyEntity> beans = context.getBeansOfType(StrategyEntity.class);
+            if (classPath.contains("/build/classes/")) {
+                resourcePath = classPath.substring(0, classPath.indexOf("/build/classes/"))
+                        + "/src/main/resources/strategy";
+            } else if (classPath.contains("/target/classes/")) {
+                resourcePath = classPath.substring(0, classPath.indexOf("/target/classes/"))
+                        + "/src/main/resources/strategy";
+            }
 
-        Map map = new HashMap();
-        beans.forEach((key, value)->{
+            Path path = Paths.get(resourcePath);
+            Path pathFile = Paths.get(resourcePath,"strategy.txt");
+            if (!Files.exists(path, new LinkOption[0])) {
+                Files.createDirectories(path);
+            }
 
-            generateKey(value.getClass(), (item, item2)->{
+            if (!Files.exists(pathFile, new LinkOption[0])) {
 
-                if (item.equals("")){
-                    return;
+                try (BufferedWriter writer = Files.newBufferedWriter(pathFile)) {
+                    writer.write("======= 当前策略模式注册相应关系 =======\n");
                 }
+            }
 
-                for (int i = 0; i < value.rule().length; i++) {
-                    if ( value.rule()[i].getClass() != item2.value()){
-                        return;
+            Field field = strategyMap.getClass().getDeclaredField("data");
+            field.setAccessible(true);
+            Map<String, Map<Object, Object>> data  = (Map<String, Map<Object, Object>>) field.get(strategyMap);
+
+            try (BufferedWriter writer = Files.newBufferedWriter(pathFile,
+                    StandardCharsets.UTF_8, StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING)) {
+
+                for (Map.Entry<String, Map<Object, Object>> entry : data.entrySet()){
+                    writer.write("模式名称：" + entry.getKey() + "\n");
+                    for (Map.Entry<Object, Object> entry2 : entry.getValue().entrySet()){
+                        writer.write("    具体实现：" +
+                                entry2.getKey().toString() +
+                                "：" +
+                                entry2.getValue().getClass().getName() +
+                                "\n");
                     }
-                    map.put(value.rule()[i], value);
-                }
-                strategyMap.put(item, map);
-            });
-        });
-    }
-
-    private <T> void generateKey (Class<T> data, BiConsumer<String, StrategyType> consumer) {
-
-        StringBuilder stringBuilder = new StringBuilder();
-        Class[] classes = data.getInterfaces();
-
-        Integer count = 0;
-
-        for (int i = 0; i < classes.length; i++) {
-            Annotation[] annotations = classes[i].getAnnotations();
-
-            for (int j = 0; j < annotations.length; j++) {
-
-                if (annotations[j].annotationType().getTypeName().
-                        equals("com.wzh.designmode.strategy.annotation.StrategyType")) {
-                    count = count + 1;
+                    writer.write("\n");
+                    writer.write("\n");
                 }
             }
 
-            if (count == 1) {
-                StrategyType strategyType = (StrategyType) classes[i].getAnnotation(StrategyType.class);
-
-                String keyType = strategyType
-                        .value()
-                        .toString()
-                        .replace("class", "")
-                        .trim();
-
-                String key = classes[i]
-                        .toString()
-                        .replace("class", "")
-                        .trim();
-
-                stringBuilder.append(keyType).append("_").append(key);
-
-                consumer.accept(stringBuilder.toString(), strategyType);
-
-            }
-            count = 0;
+        } catch (IOException e) {
+            log.error("StrategyMap值输出文件失败", e);
+        } catch (NoSuchFieldException e) {
+            log.error("获取StrategyMap值失败", e);
+        } catch (IllegalAccessException e) {
+            log.error("StrategyMap值转换json失败", e);
         }
     }
-
-
 
 }
