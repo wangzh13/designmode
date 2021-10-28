@@ -1,4 +1,4 @@
-package com.wzh.designmode.strategy;
+package com.wzh.strategy;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

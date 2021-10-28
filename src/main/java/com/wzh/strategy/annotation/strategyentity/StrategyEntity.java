@@ -1,4 +1,4 @@
-package com.wzh.designmode.strategy.annotation.strategyentity;
+package com.wzh.strategy.annotation.strategyentity;
 
 import java.util.List;
 

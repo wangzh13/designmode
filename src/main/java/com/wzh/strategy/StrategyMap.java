@@ -1,7 +1,7 @@
-package com.wzh.designmode.strategy;
+package com.wzh.strategy;
 
-import com.wzh.designmode.strategy.exception.StrategyEnum;
-import com.wzh.designmode.strategy.exception.StrategyException;
+import com.wzh.strategy.exception.StrategyEnum;
+import com.wzh.strategy.exception.StrategyException;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;

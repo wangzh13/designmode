@@ -1,4 +1,4 @@
-package com.wzh.designmode.strategy.exception;
+package com.wzh.strategy.exception;
 
 public class StrategyException extends RuntimeException{
 

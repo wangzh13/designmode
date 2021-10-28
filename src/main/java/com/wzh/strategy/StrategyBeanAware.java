@@ -1,7 +1,7 @@
-package com.wzh.designmode.strategy;
+package com.wzh.strategy;
 
-import com.wzh.designmode.strategy.annotation.StrategyType;
-import com.wzh.designmode.strategy.annotation.strategyentity.StrategyEntity;
+import com.wzh.strategy.annotation.StrategyType;
+import com.wzh.strategy.annotation.strategyentity.StrategyEntity;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;

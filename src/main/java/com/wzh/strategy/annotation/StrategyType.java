@@ -1,4 +1,4 @@
-package com.wzh.designmode.strategy.annotation;
+package com.wzh.strategy.annotation;
 
 import org.springframework.stereotype.Component;
 
