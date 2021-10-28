@@ -4,7 +4,7 @@ public enum StrategyEnum {
 
     DATA_ERROR(1,"Map数据不可为null"),
 
-    TYPE_NOT_MATCH_ERROR(2,"类型不符合要求，类型只可以是（基础数据类型，Class类对象，枚举）");
+    TYPE_NOT_MATCH_ERROR(2,"未找到对应的策略模式");
 
     private int code;
     private String msg;
