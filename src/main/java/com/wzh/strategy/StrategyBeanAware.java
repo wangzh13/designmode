@@ -57,7 +57,7 @@ public class StrategyBeanAware implements ApplicationContextAware {
             for (int j = 0; j < annotations.length; j++) {
 
                 if (annotations[j].annotationType().getTypeName().
-                        equals("com.wzh.designmode.strategy.annotation.StrategyType")) {
+                        equals("com.wzh.strategy.annotation.StrategyType")) {
                     count = count + 1;
                 }
             }
