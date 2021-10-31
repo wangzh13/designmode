@@ -2,25 +2,144 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.5.6-SNAPSHOT</version>
-        <relativePath/> <!-- lookup parent from repository -->
-    </parent>
-    <groupId>com.wzh</groupId>
+    <groupId>io.github.wangzh13</groupId>
     <artifactId>strategy</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>strategy</name>
-    <description>strategy project</description>
+    <url>https://github.com/wangzh13/designmode</url>
+    <packaging>jar</packaging>
+    <description>strategy design mode for springboot</description>
+    <!-- 许可证信息 -->
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
+        </license>
+    </licenses>
+    <scm>
+        <tag>master</tag>
+        <url>https://github.com/wangzh13/designmode</url>
+        <connection>scm:git:git://github.com/wangzh13/designmode.git</connection>
+        <developerConnection>scm:git:ssh://github.com/wangzh13/designmode.git</developerConnection>
+    </scm>
+    <developers>
+        <developer>
+            <name>wangzuohu</name>
+            <id>wangzuohu</id>
+            <email>2387240503@qq.com</email>
+            <roles>
+                <role>developer</role>
+            </roles>
+        </developer>
+    </developers>
+
     <properties>
         <java.version>1.8</java.version>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
+            <version>2.5.5</version>
         </dependency>
     </dependencies>
+
+
+
+    <profiles>
+        <profile>
+            <id>default</id>
+
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+
+                <plugins>
+
+                    <plugin>
+                        <!--提供打包(将应用打包成可执行的jar包)-->
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                        <version>2.5.5</version>
+                    </plugin>
+                    <plugin>
+                        <!-- 指定maven编译的jdk版本 -->
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <version>3.8.1</version>
+                        <configuration>
+                            <verbose>true</verbose>
+                            <fork>true</fork>
+                            <!--你的jdk地址-->
+                            <executable>C:\Program Files\Java\jdk1.8.0_311/bin/javac</executable>
+                        </configuration>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-deploy-plugin</artifactId>
+                        <version>2.7</version>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>2.2.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>2.9.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!--  必须配置GPG插件用于使用以下配置对组件进行签名 -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.6</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+
+
+            <distributionManagement>
+                <snapshotRepository>
+                    <id>ossrh</id>
+                    <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+                </snapshotRepository>
+                <repository>
+                    <id>ossrh</id>
+                    <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+                </repository>
+            </distributionManagement>
+
+        </profile>
+    </profiles>
 
 </project>
